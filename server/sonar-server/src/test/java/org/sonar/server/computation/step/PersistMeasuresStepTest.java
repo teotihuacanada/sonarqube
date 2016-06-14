@@ -392,7 +392,8 @@ public class PersistMeasuresStepTest extends BaseStepTest {
   }
 
   private ComponentDto addComponent(String key) {
-    ComponentDto componentDto = new ComponentDto().setKey(key).setUuid(Uuids.create());
+    String uuid = Uuids.create();
+    ComponentDto componentDto = new ComponentDto().setKey(key).setUuid(uuid).setRootUuid(uuid);
     dbClient.componentDao().insert(dbTester.getSession(), componentDto);
     return componentDto;
   }

@@ -72,10 +72,15 @@ public class ResourceDao extends AbstractDao {
   public ResourceDto selectResource(String componentUuid) {
     SqlSession session = myBatis().openSession(false);
     try {
-      return session.getMapper(ResourceMapper.class).selectResourceByUuid(componentUuid);
+      return selectResource(componentUuid, session);
     } finally {
       MyBatis.closeQuietly(session);
     }
+  }
+
+  @CheckForNull
+  private ResourceDto selectResource(String componentUuid, SqlSession session) {
+    return session.getMapper(ResourceMapper.class).selectResourceByUuid(componentUuid);
   }
 
   public ResourceDto selectResource(long projectId, SqlSession session) {
@@ -112,11 +117,11 @@ public class ResourceDao extends AbstractDao {
   private ResourceDto getRootProjectByComponentKey(DbSession session, String componentKey) {
     ResourceDto component = selectResource(ResourceQuery.create().setKey(componentKey), session);
     if (component != null) {
-      Long rootId = component.getRootId();
-      if (rootId != null) {
-        return getParentModuleByComponentId(rootId, session);
-      } else {
+      String rootUuid = component.getRootUuid();
+      if (rootUuid.equals(component.getUuid())) {
         return component;
+      } else {
+        return getParentModuleByComponentUuid(rootUuid, session);
       }
     }
     return null;
@@ -136,11 +141,25 @@ public class ResourceDao extends AbstractDao {
   private ResourceDto getParentModuleByComponentId(Long componentId, DbSession session) {
     ResourceDto component = selectResource(componentId, session);
     if (component != null) {
-      Long rootId = component.getRootId();
-      if (rootId != null) {
-        return getParentModuleByComponentId(rootId, session);
-      } else {
+      String rootUuid = component.getRootUuid();
+      if (rootUuid.equals(component.getUuid())) {
         return component;
+      } else {
+        return getParentModuleByComponentUuid(rootUuid, session);
+      }
+    }
+    return null;
+  }
+
+  @CheckForNull
+  private ResourceDto getParentModuleByComponentUuid(String componentUUid, DbSession session) {
+    ResourceDto component = selectResource(componentUUid, session);
+    if (component != null) {
+      String rootUuid = component.getRootUuid();
+      if (rootUuid.equals(component.getUuid())) {
+        return component;
+      } else {
+        return getParentModuleByComponentUuid(rootUuid, session);
       }
     }
     return null;
@@ -225,11 +244,6 @@ public class ResourceDao extends AbstractDao {
 
   public static List<Component> toComponents(List<ResourceDto> resourceDto) {
     return newArrayList(Iterables.transform(resourceDto, ToComponent.INSTANCE));
-  }
-
-  public void insertUsingExistingSession(ResourceDto resourceDto, SqlSession session) {
-    ResourceMapper resourceMapper = session.getMapper(ResourceMapper.class);
-    resourceMapper.insert(resourceDto);
   }
 
   private enum ToComponent implements Function<ResourceDto, Component> {

@@ -134,7 +134,7 @@ class MeasureFilterSql {
   private void appendResourceConditions(StringBuilder sb) {
     sb.append(" s.status='P' AND s.islast=").append(database.getDialect().getTrueSqlValue());
     if (context.getBaseSnapshot() == null) {
-      sb.append(" AND p.copy_resource_id IS NULL ");
+      sb.append(" AND p.copy_component_uuid IS NULL ");
     }
     if (!filter.getResourceQualifiers().isEmpty()) {
       sb.append(" AND s.qualifier IN ");
