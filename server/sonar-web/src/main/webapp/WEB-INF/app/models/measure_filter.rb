@@ -189,7 +189,7 @@ class MeasureFilter < ActiveRecord::Base
 
   def base_resource
     if criteria('base')
-      Project.first(:conditions => ['kee=? and copy_resource_id is null and person_id is null', criteria('base')])
+      Project.first(:conditions => ['kee=? and copy_component_uuid is null and developer_uuid is null', criteria('base')])
     end
   end
 
@@ -277,7 +277,7 @@ class MeasureFilter < ActiveRecord::Base
         measures = []
         snapshot_ids.each_slice(999) do |safe_for_oracle_ids|
           measures.concat(ProjectMeasure.all(:conditions =>
-            ['person_id is null and snapshot_id in (?) and metric_id in (?)', safe_for_oracle_ids, metric_ids]
+            ['developer_uuid is null and snapshot_id in (?) and metric_id in (?)', safe_for_oracle_ids, metric_ids]
           ))
         end
         measures.each do |measure|
@@ -309,7 +309,7 @@ class MeasureFilter < ActiveRecord::Base
         @base_row = Row.new(base_snapshot)
         unless metric_ids.empty?
           base_measures = ProjectMeasure.all(:conditions =>
-            ['person_id is null and snapshot_id=? and metric_id in (?)', base_snapshot.id, metric_ids]
+            ['developer_uuid is null and snapshot_id=? and metric_id in (?)', base_snapshot.id, metric_ids]
           )
           base_measures.each do |base_measure|
             @base_row.add_measure(base_measure)
