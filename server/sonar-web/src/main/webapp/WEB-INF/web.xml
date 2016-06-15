@@ -57,7 +57,7 @@
     <filter-class>org.sonar.server.platform.ProfilingFilter</filter-class>
     <init-param>
       <param-name>staticDirs</param-name>
-      <param-value>/images,/javascripts,/stylesheets</param-value>
+      <param-value>/images,/js,/css,/static,/fonts</param-value>
     </init-param>
   </filter>
 
