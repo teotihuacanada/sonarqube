@@ -68,7 +68,7 @@ class DefaultAuthorizer
       page_count.times do |page_index|
         page_component_uuids=compacted_component_uuids[page_index*page_size...(page_index+1)*page_size]
         user_roles.concat(
-          ActiveRecord::Base.connection.execute("SELECT p.uuid as 'uuid' FROM user_roles ur INNER JOIN projects p ON p.id=ur.resource_id WHERE ur.role='#{sanitized_role}' and ur.user_id=#{user.id} and p.uuid in (#{page_component_uuids.map{ |u| "'#{u}'" }.join(','))}")
+          ActiveRecord::Base.connection.execute("SELECT p.uuid FROM user_roles ur INNER JOIN projects p ON p.id=ur.resource_id WHERE ur.role='#{sanitized_role}' and ur.user_id=#{user.id} and p.uuid in (#{page_component_uuids.map{ |u| "'#{u}'" }.join(',')})")
         )
       end
     end
