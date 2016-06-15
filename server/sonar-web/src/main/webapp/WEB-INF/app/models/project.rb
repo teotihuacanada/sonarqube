@@ -217,7 +217,7 @@ class Project < ActiveRecord::Base
   end
 
   def parent_module(current_module)
-    current_module.root ? parent_module(current_module.root) : current_module
+    current_module.root.uuid = current_module.uuid ? current_module : parent_module(current_module.root)
   end
 
 end
