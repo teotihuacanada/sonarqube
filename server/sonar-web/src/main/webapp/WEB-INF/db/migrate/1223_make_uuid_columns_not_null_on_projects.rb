@@ -26,6 +26,6 @@ class MakeUuidColumnsNotNullOnProjects < ActiveRecord::Migration
   def self.up
     execute_java_migration('org.sonar.db.version.v60.MakeUuidColumnsNotNullOnProjects')
 
-    add_index :projects, :root_uuid, :name => 'project_root_uuid'
+    add_index :projects, :root_uuid, :name => 'projects_root_uuid'
   end
 end
