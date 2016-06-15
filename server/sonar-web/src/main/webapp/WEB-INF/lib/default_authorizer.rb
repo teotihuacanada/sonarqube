@@ -57,7 +57,7 @@ class DefaultAuthorizer
         gr_page_count.times do |gr_page_index|
           page_grids=compacted_group_ids[gr_page_index*page_size...(gr_page_index+1)*page_size]
           group_roles.concat(
-            ActiveRecord::Base.connection.execute("SELECT p.uuid FROM group_roles gr INNER JOIN projects p ON p.id=gr.resource_id WHERE gr.role='#{sanitized_role}' and (gr.group_id is null or gr.group_id in(#{page_grids.join(',')})) and p.uuid in (#{page_component_uuids.map{ |u| "'#{u}'" }.join(',')}")
+            ActiveRecord::Base.connection.execute("SELECT p.uuid FROM group_roles gr INNER JOIN projects p ON p.id=gr.resource_id WHERE gr.role='#{sanitized_role}' and (gr.group_id is null or gr.group_id in(#{page_grids.join(',')})) and p.uuid in (#{page_component_uuids.map{ |u| "'#{u}'" }.join(',')})")
           )
         end
       end
