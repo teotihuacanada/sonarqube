@@ -83,6 +83,7 @@ import org.sonar.db.version.v55.FeedRulesLongDateColumns;
 import org.sonar.db.version.v55.FeedRulesTypes;
 import org.sonar.db.version.v56.FixLengthOfIssuesMessageOnOracle;
 import org.sonar.db.version.v56.FixTypeOfRuleTypeOnMysql;
+import org.sonar.db.version.v60.AddComponentUuidColumnToDuplicationsIndex;
 import org.sonar.db.version.v60.AddComponentUuidColumnToMeasures;
 import org.sonar.db.version.v60.AddUuidColumnsToProjects;
 import org.sonar.db.version.v60.AddUuidColumnsToResourceIndex;
@@ -90,6 +91,7 @@ import org.sonar.db.version.v60.AddUuidColumnsToSnapshots;
 import org.sonar.db.version.v60.CleanOrphanRowsInProjects;
 import org.sonar.db.version.v60.CleanOrphanRowsInResourceIndex;
 import org.sonar.db.version.v60.CleanOrphanRowsInSnapshots;
+import org.sonar.db.version.v60.DeleteOrphanDuplicationsIndexRowsWithoutComponent;
 import org.sonar.db.version.v60.DeleteOrphanMeasuresWithoutComponent;
 import org.sonar.db.version.v60.DropIdColumnsFromProjects;
 import org.sonar.db.version.v60.DropIdColumnsFromResourceIndex;
@@ -97,10 +99,12 @@ import org.sonar.db.version.v60.DropIdColumnsFromSnapshots;
 import org.sonar.db.version.v60.DropProjectIdColumnFromMeasures;
 import org.sonar.db.version.v60.DropRememberMeColumnsFromUsers;
 import org.sonar.db.version.v60.DropUnusedMeasuresColumns;
+import org.sonar.db.version.v60.MakeComponentUuidNotNullOnDuplicationsIndex;
 import org.sonar.db.version.v60.MakeComponentUuidNotNullOnMeasures;
 import org.sonar.db.version.v60.MakeUuidColumnsNotNullOnProjects;
 import org.sonar.db.version.v60.MakeUuidColumnsNotNullOnResourceIndex;
 import org.sonar.db.version.v60.MakeUuidColumnsNotNullOnSnapshots;
+import org.sonar.db.version.v60.PopulateComponentUuidOfDuplicationsIndex;
 import org.sonar.db.version.v60.PopulateComponentUuidOfMeasures;
 import org.sonar.db.version.v60.PopulateUuidColumnsOfProjects;
 import org.sonar.db.version.v60.PopulateUuidColumnsOfResourceIndex;
@@ -211,6 +215,10 @@ public class MigrationStepModule extends Module {
       PopulateUuidColumnsOfProjects.class,
       CleanOrphanRowsInProjects.class,
       MakeUuidColumnsNotNullOnProjects.class,
-      DropIdColumnsFromProjects.class);
+      DropIdColumnsFromProjects.class,
+      AddComponentUuidColumnToDuplicationsIndex.class,
+      PopulateComponentUuidOfDuplicationsIndex.class,
+      DeleteOrphanDuplicationsIndexRowsWithoutComponent.class,
+      MakeComponentUuidNotNullOnDuplicationsIndex.class);
   }
 }
