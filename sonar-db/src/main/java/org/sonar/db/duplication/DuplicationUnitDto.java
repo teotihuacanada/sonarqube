@@ -23,15 +23,13 @@ public final class DuplicationUnitDto {
 
   private long id;
   private long snapshotId;
+  private String componentUuid;
   private long projectSnapshotId;
 
   private String hash;
   private int indexInFile;
   private int startLine;
   private int endLine;
-
-  // Return by join
-  private String componentKey;
 
   public long getId() {
     return id;
@@ -48,6 +46,15 @@ public final class DuplicationUnitDto {
 
   public DuplicationUnitDto setSnapshotId(long snapshotId) {
     this.snapshotId = snapshotId;
+    return this;
+  }
+
+  public String getComponentUuid() {
+    return componentUuid;
+  }
+
+  public DuplicationUnitDto setComponentUuid(String componentUuid) {
+    this.componentUuid = componentUuid;
     return this;
   }
 
@@ -96,8 +103,5 @@ public final class DuplicationUnitDto {
     return this;
   }
 
-  public String getComponentKey() {
-    return componentKey;
-  }
 
 }

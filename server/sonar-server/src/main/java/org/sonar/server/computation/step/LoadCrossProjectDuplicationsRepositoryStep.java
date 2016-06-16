@@ -108,7 +108,7 @@ public class LoadCrossProjectDuplicationsRepositoryStep implements ComputationSt
       }
 
       Collection<Block> duplicatedBlocks = from(dtos).transform(DtoToBlock.INSTANCE).toList();
-      Collection<Block> originBlocks = from(cpdTextBlocks).transform(new CpdTextBlockToBlock(file.getKey())).toList();
+      Collection<Block> originBlocks = from(cpdTextBlocks).transform(new CpdTextBlockToBlock(file.getUuid())).toList();
       LOGGER.trace("Found {} duplicated cpd blocks on file {}", duplicatedBlocks.size(), file.getKey());
 
       integrateCrossProjectDuplications.computeCpd(file, originBlocks, duplicatedBlocks);
@@ -142,7 +142,7 @@ public class LoadCrossProjectDuplicationsRepositoryStep implements ComputationSt
     public Block apply(@Nonnull DuplicationUnitDto dto) {
       // Note that the dto doesn't contains start/end token indexes
       return Block.builder()
-        .setResourceId(dto.getComponentKey())
+        .setResourceId(dto.getComponentUuid())
         .setBlockHash(new ByteArray(dto.getHash()))
         .setIndexInFile(dto.getIndexInFile())
         .setLines(dto.getStartLine(), dto.getEndLine())
@@ -151,17 +151,17 @@ public class LoadCrossProjectDuplicationsRepositoryStep implements ComputationSt
   }
 
   private static class CpdTextBlockToBlock implements Function<CpdTextBlock, Block> {
-    private final String fileKey;
+    private final String fileUuid;
     private int indexInFile = 0;
 
-    public CpdTextBlockToBlock(String fileKey) {
-      this.fileKey = fileKey;
+    public CpdTextBlockToBlock(String fileUuid) {
+      this.fileUuid = fileUuid;
     }
 
     @Override
     public Block apply(@Nonnull CpdTextBlock duplicationBlock) {
       Block block = Block.builder()
-        .setResourceId(fileKey)
+        .setResourceId(fileUuid)
         .setBlockHash(new ByteArray(duplicationBlock.getHash()))
         .setIndexInFile(indexInFile)
         .setLines(duplicationBlock.getStartLine(), duplicationBlock.getEndLine())
