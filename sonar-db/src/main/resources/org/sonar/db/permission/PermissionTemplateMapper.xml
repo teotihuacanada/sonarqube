@@ -261,7 +261,7 @@
     pt.key_pattern AS template_key_pattern,
     pt.created_at AS template_created_at,
     pt.updated_at AS template_updated_at,
-    ptc.id AS permission_template_characteristic_id,
+    ptc.id AS ptc_id,
     ptc.permission_key AS characteristic_permission,
     ptc.with_project_creator AS with_project_creator
     FROM permission_templates pt
@@ -364,7 +364,7 @@
       <result property="groupName" column="group_name"/>
     </collection>
     <collection property="characteristics" ofType="TemplatePermission">
-      <id property="id" column="permission_template_characteristic_id"/>
+      <id property="id" column="ptc_id"/>
       <result property="permission" column="characteristic_permission"/>
       <result property="withProjectCreator" column="with_project_creator"/>
     </collection>

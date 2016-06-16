@@ -265,7 +265,9 @@ public class PermissionTemplateDaoTest {
     db.commit();
 
     PermissionTemplateDto result = underTest.selectByUuidWithUserAndGroupPermissions(dbSession, "TEMPLATE_UUID");
-    assertThat(result).isEqualToIgnoringNullFields(template);
+    assertThat(result)
+      .extracting(PermissionTemplateDto::getId, PermissionTemplateDto::getUuid, PermissionTemplateDto::getName, PermissionTemplateDto::getDescription)
+      .containsExactly(template.getId(), template.getUuid(), template.getName(), template.getDescription());
     assertThat(result.getCharacteristics()).hasSize(1)
       .extracting(PermissionTemplateCharacteristicDto::getId, PermissionTemplateCharacteristicDto::getPermission, PermissionTemplateCharacteristicDto::getWithProjectCreator)
       .containsExactly(tuple(characteristic.getId(), UserRole.USER, true));
