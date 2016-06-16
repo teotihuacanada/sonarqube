@@ -38,6 +38,10 @@ public class AuthenticationModule extends Module {
       ValidateJwtTokenFilter.class,
       JwtSerializer.class,
       JwtHttpHandler.class,
-      JwtCsrfVerifier.class);
+      JwtCsrfVerifier.class,
+      AuthLoginAction.class,
+      LocalAuthenticator.class,
+      ExternalAuthenticator.class,
+      UserAuthenticator.class);
   }
 }

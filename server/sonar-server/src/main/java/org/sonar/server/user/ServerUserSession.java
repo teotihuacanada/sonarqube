@@ -19,6 +19,9 @@
  */
 package org.sonar.server.user;
 
+import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,9 +30,6 @@ import org.sonar.api.security.DefaultGroups;
 import org.sonar.db.component.ResourceDao;
 import org.sonar.db.component.ResourceDto;
 import org.sonar.db.user.AuthorizationDao;
-
-import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Part of the current HTTP session
@@ -41,7 +41,7 @@ public class ServerUserSession extends AbstractUserSession<ServerUserSession> {
   private final AuthorizationDao authorizationDao;
   private final ResourceDao resourceDao;
 
-  ServerUserSession(AuthorizationDao authorizationDao, ResourceDao resourceDao) {
+  public ServerUserSession(AuthorizationDao authorizationDao, ResourceDao resourceDao) {
     super(ServerUserSession.class);
     this.globalPermissions = null;
     this.authorizationDao = authorizationDao;

@@ -19,6 +19,9 @@
  */
 package org.sonar.server.user;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Lists.newArrayList;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -46,9 +49,6 @@ import org.sonar.server.exceptions.NotFoundException;
 import org.sonar.server.exceptions.ServerException;
 import org.sonar.server.user.index.UserIndexer;
 import org.sonar.server.util.Validation;
-
-import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.collect.Lists.newArrayList;
 
 @ServerSide
 public class UserUpdater {
@@ -373,7 +373,7 @@ public class UserUpdater {
     userDto.setCryptedPassword(encryptPassword(password, saltHex));
   }
 
-  private static String encryptPassword(String password, String salt) {
+  public static String encryptPassword(String password, String salt) {
     return DigestUtils.sha1Hex("--" + salt + "--" + password + "--");
   }
 

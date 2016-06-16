@@ -19,6 +19,9 @@
  */
 package org.sonar.server.user;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
@@ -35,9 +38,6 @@ import javax.annotation.Nullable;
 import org.sonar.api.security.DefaultGroups;
 import org.sonar.server.exceptions.ForbiddenException;
 import org.sonar.server.exceptions.UnauthorizedException;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 
 public abstract class AbstractUserSession<T extends AbstractUserSession> implements UserSession {
   protected static final String INSUFFICIENT_PRIVILEGES_MESSAGE = "Insufficient privileges";
@@ -67,7 +67,7 @@ public abstract class AbstractUserSession<T extends AbstractUserSession> impleme
     return login;
   }
 
-  protected T setLogin(@Nullable String s) {
+  public T setLogin(@Nullable String s) {
     this.login = Strings.emptyToNull(s);
     return clazz.cast(this);
   }
@@ -78,7 +78,7 @@ public abstract class AbstractUserSession<T extends AbstractUserSession> impleme
     return name;
   }
 
-  protected T setName(@Nullable String s) {
+  public T setName(@Nullable String s) {
     this.name = Strings.emptyToNull(s);
     return clazz.cast(this);
   }
@@ -89,7 +89,7 @@ public abstract class AbstractUserSession<T extends AbstractUserSession> impleme
     return userId;
   }
 
-  protected T setUserId(@Nullable Integer userId) {
+  public T setUserId(@Nullable Integer userId) {
     this.userId = userId;
     return clazz.cast(this);
   }
@@ -99,7 +99,7 @@ public abstract class AbstractUserSession<T extends AbstractUserSession> impleme
     return userGroups;
   }
 
-  protected T setUserGroups(@Nullable String... userGroups) {
+  public T setUserGroups(@Nullable String... userGroups) {
     if (userGroups != null) {
       this.userGroups.addAll(Arrays.asList(userGroups));
     }
