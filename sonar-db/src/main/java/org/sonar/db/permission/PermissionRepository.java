@@ -211,6 +211,18 @@ public class PermissionRepository {
     return defaultTemplateKey;
   }
 
+  public boolean wouldUserHavePermissionWithDefaultTemplate(DbSession dbSession, @Nullable Long currentUserId, String permission, String projectKey, String qualifier) {
+    String templateUuid = getApplicablePermissionTemplateKey(dbSession, projectKey, qualifier);
+    PermissionTemplateDto template = dbClient.permissionTemplateDao().selectByUuid(dbSession, templateUuid);
+    if (template == null) {
+      return false;
+    }
+
+    List<String> potentialPermissions = dbClient.permissionTemplateDao().selectPotentialPermissionsByUserIdAndTemplateId(dbSession, currentUserId, template.getId());
+
+    return potentialPermissions.contains(permission);
+  }
+
   private static void checkAtMostOneMatchForComponentKey(final String componentKey, List<PermissionTemplateDto> matchingTemplates) {
     if (matchingTemplates.size() > 1) {
       StringBuilder templatesNames = new StringBuilder();

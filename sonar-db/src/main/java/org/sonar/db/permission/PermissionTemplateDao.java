@@ -412,6 +412,10 @@ public class PermissionTemplateDao implements Dao {
     return mapper(dbSession).selectByName(name.toUpperCase(Locale.ENGLISH));
   }
 
+  public List<String> selectPotentialPermissionsByUserIdAndTemplateId(DbSession dbSession, @Nullable Long currentUserId, long templateId) {
+    return mapper(dbSession).selectPotentialPermissionsByUserIdAndTemplateId(currentUserId, templateId);
+  }
+
   /**
    * Remove a group from all templates (used when removing a group)
    */
